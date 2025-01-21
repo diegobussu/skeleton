@@ -1,5 +1,5 @@
-import { db, DataTypes } from '../db/config';
-import Logger from '../libs/logger';
+import { db, DataTypes } from '@db/config';
+import Logger from '@libs/logger';
 import { Product } from './Product';
 import { User } from './User';
 

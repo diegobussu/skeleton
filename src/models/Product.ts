@@ -1,5 +1,5 @@
-import { db, DataTypes } from '../db/config';
-import Logger from '../libs/logger';
+import { db, DataTypes } from '@db/config';
+import Logger from '@libs/logger';
 
 export const Product = db.define(
   'Product',

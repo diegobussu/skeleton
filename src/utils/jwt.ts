@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { UserPayload } from '../models/User';
-import Logger from '../libs/logger';
+import { UserPayload } from '@models/User';
+import Logger from '@libs/logger';
 
 const SECRET_KEY = process.env.JWT_KEY || '';
 

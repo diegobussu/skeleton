@@ -4,8 +4,6 @@ COPY ./src /src
 
 COPY ./package.json /package.json
 
-COPY ./swagger /swagger
-
-RUN npm run start
+RUN npm run start:prod
 
 CMD node index.js

@@ -1,5 +1,5 @@
-import { db, DataTypes, Model } from '../db/config';
-import Logger from '../libs/logger';
+import { db, DataTypes, Model } from '@db/config';
+import Logger from '@libs/logger';
 
 export interface UserPayload {
   userId: number;

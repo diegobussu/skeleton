@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt';
-import Logger from '../libs/logger';
+import { verifyToken } from '@utils/jwt';
+import Logger from '@libs/logger';
 
 export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>

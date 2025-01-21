@@ -1,11 +1,12 @@
 import express from 'express';
-import { db } from './db/config';
 import helmet from 'helmet';
 import cors from 'cors';
-import Logger from './libs/logger';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import authRouter from './routes/AuthRouter';
+import { db } from '@db/config';
+import Logger from '@libs/logger';
+import authRouter from '@routes/AuthRouter';
+import loggerRouter from '@routes/LoggerRouter';
 
 const app = express();
 const port = 3000;
@@ -43,6 +44,7 @@ app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Routes configuration
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/logger', loggerRouter);
 
 // Start the server and export the server instance
 const server = app.listen(port, () => {

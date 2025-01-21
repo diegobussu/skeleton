@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { generateToken } from '../utils/jwt';
-import { User } from '../models/User';
-import Logger from '../libs/logger';
+import { generateToken } from '@utils/jwt';
+import { User } from '@models/User';
+import Logger from '@libs/logger';
 
 const router = Router();
 
@@ -11,7 +11,7 @@ router.post('/register', async (req: Request, res: Response) => {
   const { first_name, last_name, email, password, role } = req.body;
 
   // Validate input
-  if (!first_name || !last_name || !email || !password || !role) {
+  if (!first_name || !last_name || !email || !password) {
     return res.status(400).json({ message: 'Missing required fields' });
   }
 
