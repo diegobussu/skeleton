@@ -1,4 +1,4 @@
-import { UserPayload } from '../utils/jwt'; // Import your User type
+import { UserPayload } from '../models/User'; // Import your User type
 
 declare global {
   namespace Express {

@@ -1,6 +1,32 @@
-import { db, DataTypes } from '../db/config';
+import { db, DataTypes, Model } from '../db/config';
+import Logger from '../libs/logger';
 
-const User = db.define(
+export interface UserPayload {
+  userId: number;
+  role: string;
+}
+
+export interface UserAttributes extends Model {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: number;
+  address: string;
+  zip_code: number;
+  city: string;
+  country: string;
+  role: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export type UserModel = typeof Model & {
+  new (): UserAttributes;
+};
+
+export const User = <UserModel>db.define(
   'User',
   {
     id: {
@@ -56,4 +82,12 @@ const User = db.define(
   },
 );
 
-export { User };
+// Synchronize the model with the database
+(async () => {
+  try {
+    await User.sync({ force: false });
+    Logger.info('User model synchronized with the database.');
+  } catch (error) {
+    Logger.error('Error synchronizing the User model : ', error);
+  }
+})();

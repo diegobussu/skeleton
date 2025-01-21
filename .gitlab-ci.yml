@@ -68,7 +68,7 @@ deploy-dev:
     - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker stack
       rm dev-tdev-api"
     - sleep 10
-    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_DEV} NODE_ENV=Dev
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_DEV} NODE_ENV=development
       API_URL=${API_URL_DEV}
       POSTGRES_HOST=${POSTGRES_HOST} POSTGRES_DB=${POSTGRES_DB_DEV}
       POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -104,7 +104,7 @@ deploy-prod:
     - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker stack
       rm prod-tdev-api"
     - sleep 10
-    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_PROD} NODE_ENV=Prod
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_PROD} NODE_ENV=production
       API_URL=${API_URL_PROD}
       POSTGRES_HOST=${POSTGRES_HOST} POSTGRES_DB=${POSTGRES_DB_PROD}
       POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

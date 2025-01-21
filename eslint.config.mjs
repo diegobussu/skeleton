@@ -26,7 +26,39 @@ export default [
     },
 
     rules: {
-      'prettier/prettier': 'error',
+      'prettier/prettier': [
+        'error',
+        {
+          semi: true,
+          singleQuote: true,
+          trailingComma: 'all',
+          bracketSpacing: true,
+          printWidth: 120,
+          tabWidth: 2,
+          singleAttributePerLine: true,
+          bracketSameLine: false,
+          htmlWhitespaceSensitivity: 'ignore',
+          overrides: [
+            {
+              files: '*.html',
+              options: {
+                parser: 'html',
+              },
+            },
+          ],
+        },
+      ],
+      'no-else-return': 'error',
+      'no-duplicate-case': 'error',
+      'no-duplicate-imports': 'error',
+      'no-irregular-whitespace': 'error',
+      'no-useless-constructor': 'off',
+      'no-extra-bind': 'error',
+      'block-spacing': ['error', 'always'],
+      'no-console': 'warn',
+      'no-useless-catch': 'error',
+      'no-useless-return': 'error',
+      'eol-last': ['error', 'always'],
     },
   },
 ];

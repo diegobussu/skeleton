@@ -52,7 +52,7 @@ To run the image you built, use the `docker-compose.yml` file at the root of the
 
 Environment variables used :
 
-- NODE_ENV : Environment in which the app is running (Dev/Prod)
+- NODE_ENV : Environment in which the app is running (development/production)
 - POSTGRES_HOST : Adress hosting the Postgres Database
 - POSTGRES_DB= Database to be used by the app
 - POSTGRES_USER : User to be used by the app

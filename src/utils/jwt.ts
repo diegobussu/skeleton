@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken';
+import { UserPayload } from '../models/User';
+import Logger from '../libs/logger';
 
 const SECRET_KEY = process.env.JWT_KEY || '';
-
-export interface UserPayload {
-  userId: string;
-  role: string;
-}
 
 // Generate a JWT for a user
 export const generateToken = (userPayload: UserPayload) => {
@@ -20,7 +17,7 @@ export const verifyToken = (token: string): UserPayload => {
   try {
     return jwt.verify(token, SECRET_KEY) as UserPayload;
   } catch (error) {
-    console.error(error);
+    Logger.error(error);
     throw new Error('Invalid token');
   }
 };
