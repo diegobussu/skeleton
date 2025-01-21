@@ -1,7 +1,25 @@
 import express, { Request, Response } from 'express';
+import { db } from './db/config';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
+
+// Test database connection
+db.authenticate()
+  .then(async () => {
+    console.log('Connected to the PostgreSQL database!');
+    await db.sync({ force: false });
+    console.log('All models were synchronized successfully.');
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+// Middleware to parse URL-encoded data with the querystring library (extended: true)
+app.use(express.urlencoded({ extended: true }));
+
+// Middleware to parse incoming JSON requests
+app.use(express.json());
 
 // Define a simple route
 app.get('/', (req: Request, res: Response) => {

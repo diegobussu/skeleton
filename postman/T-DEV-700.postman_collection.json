@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "4c381e79-b14a-40a8-97a7-f68217516b9c",
+		"name": "T-DEV-700",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24100466",
+		"_collection_link": "https://trinity-1590.postman.co/workspace/T-DEV-700~26da0d57-9e35-4eba-974d-da8d217e1778/collection/24100466-4c381e79-b14a-40a8-97a7-f68217516b9c?action=share&source=collection_link&creator=24100466"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone_number\": 1234567890,\n  \"adress\": \"123 Main St\",\n  \"zip_code\": 12345,\n  \"city\": \"Anytown\",\n  \"country\": \"USA\",\n  \"password\": \"your_password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/v1/auth/register",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"your_password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/v1/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get user by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/api/v1/users/:id",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user by ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"Max\",\n  \"last_name\": \"Dupont\",\n  \"email\": \"max.dupont@example.com\",\n  \"phone_number\": 12356,\n  \"adress\": \"44 Town St\",\n  \"zip_code\": 6789,\n  \"city\": \"Sidney\",\n  \"country\": \"AUS\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/api/v1/users/:id",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/api/v1/users/:id",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": []
+		},
+		{
+			"name": "ProductPictures",
+			"item": []
+		},
+		{
+			"name": "Nutritional Infos",
+			"item": []
+		},
+		{
+			"name": "Invoices",
+			"item": []
+		},
+		{
+			"name": "InvoiceItems",
+			"item": []
+		},
+		{
+			"name": "Reports",
+			"item": []
+		}
+	]
+}

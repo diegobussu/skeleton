@@ -1,0 +1,115 @@
+stages:
+  - lint
+  - test
+  - build_docker
+  - deploy
+
+eslint:
+  stage: lint
+  image: node:latest
+  tags:
+    - dind
+  before_script:
+    - npm install eslint --save-dev
+  script:
+    - npx eslint .
+
+jest:
+  stage: test
+  image: node:latest
+  tags:
+    - dind
+  before_script:
+    - npm install jest --save-dev
+  script:
+    - npx jest
+
+build-docker:
+  stage: build_docker
+  tags:
+    - dind
+
+  script:
+    - cat Dockerfile
+    - docker login ${CI_REGISTRY} -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD}
+    - docker build --no-cache -f ./Dockerfile -t
+      ${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA} .
+    - docker push ${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA}
+    - docker system prune -a
+
+deploy-dev:
+  stage: deploy
+  tags:
+    - dind
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'dev'
+      when: always
+
+    - if: $CI_PIPELINE_SOURCE == 'push'
+      when: manual
+
+  script:
+    - 'which ssh-agent || ( apk add --no-cache openssh-client curl)'
+
+    - 'which ssh-agent || ( apk add --no-cache openssh-client curl)'
+    - echo installing ssh keys
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    - ssh-keyscan -H ${REMOTE_HOST} > ~/.ssh/known_hosts
+
+    - scp ./docker-compose.yml
+      ${REMOTE_USERNAME}@${REMOTE_HOST}:~/compose/t-dev/api/docker-compose.yml
+
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker login
+      ${CI_REGISTRY} -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD}"
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker pull
+      ${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA}"
+
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker stack
+      rm dev-tdev-api"
+    - sleep 10
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_DEV} NODE_ENV=Dev
+      API_URL=${API_URL_DEV}
+      POSTGRES_HOST=${POSTGRES_HOST} POSTGRES_DB=${POSTGRES_DB_DEV}
+      POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      DOCKER_PORT=${DOCKER_PORT_DEV}
+      DOCKER_IMAGE=${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA} docker
+      stack deploy dev-tdev-api -c ~/compose/t-dev/api/docker-compose.yml
+      --with-registry-auth"
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker system prune -a"
+
+deploy-prod:
+  stage: deploy
+  tags:
+    - dind
+  only:
+    - main
+  script:
+    - 'which ssh-agent || ( apk add --no-cache openssh-client curl)'
+
+    - 'which ssh-agent || ( apk add --no-cache openssh-client curl)'
+    - echo installing ssh keys
+    - install -m 600 -D /dev/null ~/.ssh/id_rsa
+    - echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    - ssh-keyscan -H ${REMOTE_HOST} > ~/.ssh/known_hosts
+
+    - scp ./docker-compose.yml
+      ${REMOTE_USERNAME}@${REMOTE_HOST}:~/compose/t-dev/api/docker-compose.yml
+
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker login
+      ${CI_REGISTRY} -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD}"
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker pull
+      ${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA}"
+
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker stack
+      rm prod-tdev-api"
+    - sleep 10
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo JWT_KEY=${JWT_KEY_PROD} NODE_ENV=Prod
+      API_URL=${API_URL_PROD}
+      POSTGRES_HOST=${POSTGRES_HOST} POSTGRES_DB=${POSTGRES_DB_PROD}
+      POSTGRES_USER=${POSTGRES_USER} POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      DOCKER_PORT=${DOCKER_PORT_PROD}
+      DOCKER_IMAGE=${CI_DEPLOY_USER}/tdev-api:${CI_COMMIT_SHORT_SHA} docker
+      stack deploy prod-tdev-api -c ~/compose/t-dev/api/docker-compose.yml
+      --with-registry-auth"
+    - ssh -i ~/.ssh/id_rsa ${REMOTE_USERNAME}@${REMOTE_HOST} "sudo docker system prune -a"
